@@ -1,23 +1,33 @@
 import { getFromLocal } from "./wishlistFunctions/getFromLocal.js";
 import { saveToLocal } from "./wishlistFunctions/saveToLocals.js";
+import { cardHTML } from "./html/card.js";
 
 export const displayProducts = (products) => {
   const productsContainer = document.querySelector(".products-container");
-
   const loaderContainer = document.querySelector(".loader-container ");
+  const wishlist = getFromLocal();
+
   loaderContainer.classList.add("hide");
 
   productsContainer.innerHTML = "";
 
   if (products.length > 0) {
     products.forEach((product) => {
-      productsContainer.innerHTML += `<div class="product">
-                                                <div class="product-item">
-                                                <div class="img-container"><img class="img" src="${product.image}"></div>
-                                                <h4>${product.name}</h4>
-                                                <div class="price"><span>${product.price}</span> <i data-id="${product.id}" data-name="${product.name}" class="far fa-star"></i></div>                                          
-                                                </div>
-                                            </div>`;
+      let cssClass = "far";
+
+      const doesObjectExist = wishlist.find(
+        (item) => parseFloat(item.id) === product.id
+      );
+
+      doesObjectExist ? (cssClass = "fas") : cssClass;
+
+      cardHTML(
+        productsContainer,
+        product.name,
+        product.image,
+        product.price,
+        product.id
+      );
     });
   } else {
     productsContainer.innerHTML = `<div class="product">No items in that price</div>`;
@@ -27,19 +37,25 @@ export const displayProducts = (products) => {
 
   const handleClick = (event) => {
     const { target } = event;
+
     target.classList.toggle("fas");
     target.classList.toggle("far");
-    console.dir(event.target.parentNode);
 
     const id = target.dataset.id;
-    const name = target.dataset;
-    const price = event.target.parentNode.textContent;
+    let productObject;
+
+    products.forEach((product) => {
+      if (product.id === parseFloat(id)) {
+        productObject = product;
+      }
+    });
+
     const currentWishlist = getFromLocal();
 
     const alreadyInWishList = currentWishlist.find((item) => item.id === id);
 
     if (!alreadyInWishList) {
-      const product = { id, name, price };
+      const product = { productObject };
       currentWishlist.push(product);
       saveToLocal(currentWishlist);
     } else {
