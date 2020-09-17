@@ -1,5 +1,5 @@
 export const displayProducts = (products) => {
-  const productsContainer = document.querySelector(".products-container");
+  const productsContainer = document.querySelector(".products");
 
   const loaderContainer = document.querySelector(".loader-container ");
   loaderContainer.classList.add("hide");
@@ -13,7 +13,7 @@ export const displayProducts = (products) => {
                                                 <div class="product-item">
                                                 <div class="img-container"><img class="img" src="${product.image}"></div>
                                                 <h4>${product.name}</h4>
-                                                <p>${product.price}</p>
+                                                <div class="price"><span>${product.price}</span> <i class="far fa-star"></i></div>                                          
                                                 </div>
                                             </div>`;
     });
