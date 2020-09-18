@@ -32,7 +32,7 @@ export const displayProducts = (products) => {
       );
     });
   } else {
-    productsContainer.innerHTML = `<div class="product">No items in that price</div>`;
+    productsContainer.innerHTML = `<div class="error">No items in that price</div>`;
   }
 
   handleClickedWishList(products);
