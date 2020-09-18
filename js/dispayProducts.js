@@ -6,8 +6,9 @@ export const displayProducts = (products) => {
   const productsContainer = document.querySelector(".products-container");
   const loaderContainer = document.querySelector(".loader-container ");
   const wishlist = getFromLocal();
+  // console.log(wishlist);
 
-  loaderContainer.classList.add("hide");
+  loaderContainer.style.display = "none";
 
   productsContainer.innerHTML = "";
 
@@ -16,7 +17,7 @@ export const displayProducts = (products) => {
       let cssClass = "far";
 
       const doesObjectExist = wishlist.find(
-        (item) => parseFloat(item.id) === product.id
+        (item) => parseFloat(item.productObject.id) === product.id
       );
 
       doesObjectExist ? (cssClass = "fas") : cssClass;
@@ -26,7 +27,8 @@ export const displayProducts = (products) => {
         product.name,
         product.image,
         product.price,
-        product.id
+        product.id,
+        cssClass
       );
     });
   } else {
@@ -52,14 +54,19 @@ export const displayProducts = (products) => {
 
     const currentWishlist = getFromLocal();
 
-    const alreadyInWishList = currentWishlist.find((item) => item.id === id);
+    const alreadyInWishList = currentWishlist.find((item) => {
+      return item.productObject.id === productObject.id;
+    });
 
     if (!alreadyInWishList) {
       const product = { productObject };
+      console.log(product);
       currentWishlist.push(product);
       saveToLocal(currentWishlist);
     } else {
-      const filteredWishlist = currentWishlist.filter((item) => item.id !== id);
+      const filteredWishlist = currentWishlist.filter((item) => {
+        console.log(item.id !== productObject.id);
+      });
       saveToLocal(filteredWishlist);
     }
   };
