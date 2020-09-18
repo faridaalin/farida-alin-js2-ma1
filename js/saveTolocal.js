@@ -1,4 +1,5 @@
 import { displayProducts } from "./dispayProducts";
+
 export const saveToLocal = (product) => {
   localStorage.setItem("wishlist", product);
 };

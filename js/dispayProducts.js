@@ -1,12 +1,12 @@
 import { getFromLocal } from "./wishlistFunctions/getFromLocal.js";
 import { saveToLocal } from "./wishlistFunctions/saveToLocals.js";
+import { handleClickedWishList } from "./eventHandlers/clickedWishlist.js";
 import { cardHTML } from "./html/card.js";
 
 export const displayProducts = (products) => {
   const productsContainer = document.querySelector(".products-container");
   const loaderContainer = document.querySelector(".loader-container ");
   const wishlist = getFromLocal();
-  // console.log(wishlist);
 
   loaderContainer.style.display = "none";
 
@@ -32,50 +32,10 @@ export const displayProducts = (products) => {
       );
     });
   } else {
-    productsContainer.innerHTML = `<div class="error">No items in that price</div>`;
+    productsContainer.innerHTML = `<div class="product">No items in that price</div>`;
   }
 
-  const favButton = document.querySelectorAll(".product i");
+  handleClickedWishList(products);
 
-  const handleClick = (event) => {
-    const { target } = event;
-
-    target.classList.toggle("fas");
-    target.classList.toggle("far");
-
-    const id = target.dataset.id;
-    let productObject;
-
-    products.forEach((product) => {
-      if (product.id === parseFloat(id)) {
-        productObject = product;
-      }
-    });
-
-    const currentWishlist = getFromLocal();
-
-    const alreadyInWishList = currentWishlist.find((item) => {
-      return item.productObject.id === productObject.id;
-    });
-
-    if (!alreadyInWishList) {
-      const product = { productObject };
-      console.log(product);
-      currentWishlist.push(product);
-      saveToLocal(currentWishlist);
-    } else {
-      const filteredWishlist = currentWishlist.filter((item) => {
-        console.log(item.id !== productObject.id);
-      });
-      saveToLocal(filteredWishlist);
-    }
-  };
-
-  favButton.forEach((button) => {
-    button.addEventListener("click", handleClick);
-  });
-
-  const saveToLocal = (wishlist) => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  };
+  saveToLocal(wishlist);
 };

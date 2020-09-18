@@ -16,10 +16,19 @@ body {
 }
 
 .main,
-nav {
+nav,
+.inner-footer {
   width: 90%;
   max-width: 1000px;
   margin: 0 auto;
+}
+
+footer {
+  background: #e4e3e3;
+  margin-top: 82px;
+}
+.inner-footer {
+  padding: 32px;
 }
 
 nav {
